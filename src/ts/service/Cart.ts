@@ -12,25 +12,17 @@ export default class Cart {
   }
 
   price(): number {
-    let amount: number = 0;
-
-    this._items.forEach(function (item: Buyable): void {
-      amount += item.price;
-    });
-
-    return amount;
+    return this._items.reduce(function (sum: number, item: Buyable): number {
+      return sum + item.price;
+    }, 0);
   }
 
   discountedPrice(discount: number): number {
     const initialPrice: number = this.price();
-    const price: number = initialPrice - initialPrice * 0.01 * discount;
-
-    return price;
+    return initialPrice - initialPrice * 0.01 * discount;
   }
 
   delete(id: number): void {
-    const index: number = this._items.findIndex((item: Buyable): boolean => item.id === id);
-
-    this._items.splice(index, 1);
+    this._items = this._items.filter((item: Buyable): boolean => item.id !== id);
   }
 }
